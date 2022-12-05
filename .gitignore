@@ -388,3 +388,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 /Inputs
+/AOC2022/appsettings.json
