@@ -24,30 +24,38 @@ public class DayWrapper
         Console.WriteLine();
         Console.WriteLine("Do you want to solve Part 1 or 2?");
         Day.SetInputString(await _inputService.GetInputOfDayAsync(Day.Year, Day.DayNumber));
-        string result = "";
         switch (Console.ReadLine())
         {
             case "1":
+                Day.UseChallengeInput();
                 Day.Gather_input();
                 await CheckAnswer(Day.HandlePart1(), Day.Year, Day.DayNumber, 1);
                 break;
             case "2":
+                Day.UseChallengeInput();
                 Day.Gather_input();
                 await CheckAnswer(Day.HandlePart1(), Day.Year, Day.DayNumber, 2);
                 break;
             case "1t":
-                // Test input;
+                Day.UseTestInput();
+                Day.Gather_input();
+                Day.Part1();
                 break;
             case "2t":
-                // Test input;
+                Day.UseTestInput();
+                Day.Gather_input();
+                Day.Part2();
                 break;
             case "1p":
+                Day.UseChallengeInput();
                 Performance_logging(Day.Gather_input, Day.Part1);
                 break;
             case "2p":
+                Day.UseChallengeInput();
                 Performance_logging(Day.Gather_input, Day.Part2);
                 break;
             case "3p":
+                Day.UseChallengeInput();
                 Performance_logging(Day.Gather_input, Day.Part1, Day.Part2);
                 break;
             default:
@@ -64,7 +72,7 @@ public class DayWrapper
             AnswerStatus.Correct => $"Answer: {answer} | CORRECT",
             AnswerStatus.Wrong => $"Answer: {answer} | INCORRECT",
             AnswerStatus.TooSoon => $"Spamming too much. HOLD YOUR HORSES",
-            AnswerStatus.DayAlreadyCompleted => ":/",
+            AnswerStatus.DayAlreadyCompleted => "Already completed this one you doofus :/",
             AnswerStatus.Unknown => "DEES KLOPT NIETE",
             _ => throw new ArgumentOutOfRangeException()
         });

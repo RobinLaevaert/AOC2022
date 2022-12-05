@@ -6,10 +6,12 @@ public abstract class Day
     public int DayNumber;
     public int Year;
     public string Info => $"{DayNumber}. {Title}";
+    
 
-    private string _inputString = string.Empty;
+    private IEnumerable<string> _challengeInput;
+    private IEnumerable<string> TestInput => File.ReadAllLines($"{Environment.CurrentDirectory}/{this.GetType().Name}/TestInput.txt");
 
-    public IEnumerable<string> Input => _inputString.Split("\n");
+    public IEnumerable<string> Input;
 
     protected Day() { }
 
@@ -23,8 +25,11 @@ public abstract class Day
 
     public void SetInputString(string inputString)
     {
-        _inputString = inputString;
+        _challengeInput = inputString.Split('\n');
     }
 
-   
+    public void UseTestInput() => Input = TestInput;
+    public void UseChallengeInput() => Input = _challengeInput;
+
+
 }
