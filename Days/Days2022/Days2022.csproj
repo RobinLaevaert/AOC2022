@@ -17,25 +17,25 @@
         <None Update="Day_02\TestInput.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Day_3\TestInput.txt">
+        <None Update="Day_03\TestInput.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Day_4\TestInput.txt">
+        <None Update="Day_04\TestInput.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Day_5\TestInput.txt">
+        <None Update="Day_05\TestInput.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Day_6\TestInput.txt">
+        <None Update="Day_06\TestInput.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Day_7\TestInput.txt">
+        <None Update="Day_07\TestInput.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Day_8\TestInput.txt">
+        <None Update="Day_08\TestInput.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="Day_9\TestInput.txt">
+        <None Update="Day_09\TestInput.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <None Update="Day_10\TestInput.txt">
