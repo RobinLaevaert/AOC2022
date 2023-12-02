@@ -35,7 +35,7 @@ public class InputService : IInputService
 
     private async Task FetchDay(int year, int day)
     {
-        var file = Path.Combine(_path, $"Day_{day}.txt");
+        var file = Path.Combine(_path, $"Year_{year}_Day_{day}.txt");
         if (!File.Exists(file))
         {
             var content = await _client.GetInputForDayAsync(year, day);

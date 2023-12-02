@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Days\Days2022\Days2022.csproj" />
+      <ProjectReference Include="..\Days\Days2023\Days2023.csproj" />
       <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 

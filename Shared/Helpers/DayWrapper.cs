@@ -34,7 +34,7 @@ public class DayWrapper
             case "2":
                 Day.UseChallengeInput();
                 Day.Gather_input();
-                await CheckAnswer(Day.HandlePart1(), Day.Year, Day.DayNumber, 2);
+                await CheckAnswer(Day.HandlePart2(), Day.Year, Day.DayNumber, 2);
                 break;
             case "1t":
                 Day.UseTestInput();

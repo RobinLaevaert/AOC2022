@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Configuration;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Shared.Interfacing;
@@ -15,18 +16,19 @@ var answerService = new AnswerService(client);
 
 while (true)
 {
-    // Console.WriteLine("Which year do you want?");
-    // var years = State.years.Where(x => x.Days.Any()).Select(x => x.YearNumber.ToString());
-    // WriteHelper.PrintInfos(years.ToList());
-    // var yearInput = Console.ReadLine();
+    Console.WriteLine("Which year do you want?");
+    var years = State.years.Where(x => x.Days.Any()).Select(x => x.YearNumber.ToString());
+    WriteHelper.PrintInfos(years.ToList());
+    var yearInput = Console.ReadLine();
     Console.WriteLine("Which Day do you want ?");
-    var infos = State.years.Single().Days.Where(x => !string.IsNullOrEmpty(x.Title)).Select(x => x.Info);
+    var year = State.years.Single(x => x.YearNumber.ToString() == yearInput);
+    var infos = year.Days.Where(x => !string.IsNullOrEmpty(x.Title)).Select(x => x.Info);
     WriteHelper.PrintInfos(infos.ToList());
     var input = Console.ReadLine();
     var dayWrapper = new DayWrapper(inputService, answerService);
-    if (int.TryParse(input, out var chosenDay) && State.years.Single().Days.SingleOrDefault(x => x.DayNumber == chosenDay) != null)
+    if (int.TryParse(input, out var chosenDay) && year.Days.SingleOrDefault(x => x.DayNumber == chosenDay) != null)
     {
-        var day = State.years.Single().Days.Single(x => x.DayNumber == chosenDay);
+        var day = year.Days.Single(x => x.DayNumber == chosenDay);
         dayWrapper.Day = day;
         await dayWrapper.HandleSelect();
         dayWrapper.Deselect();
@@ -48,31 +50,40 @@ public static class State
             YearNumber = 2022,
             Days = new()
             {
-                new Day_01(),
-                new Day_02(),
-                new Day_03(),
-                new Day_04(),
-                new Day_05(),
-                new Day_06(),
-                new Day_07(),
-                new Day_08(),
-                new Day_09(),
-                new Day_10(),
-                new Day_11(),
-                new Day_12(),
-                new Day_13(),
-                new Day_14(),
-                new Day_15(),
-                new Day_16(),
-                new Day_17(),
-                new Day_18(),
-                new Day_19(),
-                new Day_20(),
-                new Day_21(),
-                new Day_22(),
-                new Day_23(),
-                new Day_24(),
-                new Day_25(),
+                new Days2022.Day_01(),
+                new Days2022.Day_02(),
+                new Days2022.Day_03(),
+                new Days2022.Day_04(),
+                new Days2022.Day_05(),
+                new Days2022.Day_06(),
+                new Days2022.Day_07(),
+                new Days2022.Day_08(),
+                new Days2022.Day_09(),
+                new Days2022.Day_10(),
+                new Days2022.Day_11(),
+                new Days2022.Day_12(),
+                new Days2022.Day_13(),
+                new Days2022.Day_14(),
+                new Days2022.Day_15(),
+                new Days2022.Day_16(),
+                new Days2022.Day_17(),
+                new Days2022.Day_18(),
+                new Days2022.Day_19(),
+                new Days2022.Day_20(),
+                new Days2022.Day_21(),
+                new Days2022.Day_22(),
+                new Days2022.Day_23(),
+                new Days2022.Day_24(),
+                new Days2022.Day_25(),
+            }
+        },
+        new Year()
+        {
+            YearNumber = 2023,
+            Days = new()
+            {
+                new Days2023.Day_01(),
+                new Days2023.Day_02(),
             }
         }
     };
