@@ -34,8 +34,8 @@ public class RuckSack
         Complete = input.ToCharArray();
     }
     public IEnumerable<Char> Complete { get; set; }
-    private IEnumerable<Char[]> Comparted => Complete.Chunk(Complete.ToList().Count/2).ToList();
-    public IEnumerable<Char> Compartment1 => Comparted.First().ToList();
-    public IEnumerable<Char> Compartment2 => Comparted.Last().ToList();
+    private IEnumerable<Char[]> Comparted => Complete.Chunk(Complete.ToList().Count/2);
+    public IEnumerable<Char> Compartment1 => Comparted.First();
+    public IEnumerable<Char> Compartment2 => Comparted.Last();
     public IEnumerable<Char> Duplicates => Compartment1.Intersect(Compartment2);
 }
