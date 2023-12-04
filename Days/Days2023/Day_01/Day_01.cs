@@ -1,6 +1,4 @@
-﻿using Shared;
-
-namespace Days2023;
+﻿namespace Days2023;
 
 public class Day_01 : Day
 {

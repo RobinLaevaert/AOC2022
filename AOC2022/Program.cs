@@ -1,6 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Configuration;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Shared.Interfacing;
@@ -86,6 +85,27 @@ public static class State
                 new Days2023.Day_02(),
                 new Days2023.Day_03(),
                 new Days2023.Day_04(),
+                new Days2023.Day_05(),
+                new Days2023.Day_06(),
+                new Days2023.Day_07(),
+                new Days2023.Day_08(),
+                new Days2023.Day_09(),
+                new Days2023.Day_10(),
+                new Days2023.Day_11(),
+                new Days2023.Day_12(),
+                new Days2023.Day_13(),
+                new Days2023.Day_14(),
+                new Days2023.Day_15(),
+                new Days2023.Day_16(),
+                new Days2023.Day_17(),
+                new Days2023.Day_18(),
+                new Days2023.Day_19(),
+                new Days2023.Day_20(),
+                new Days2023.Day_21(),
+                new Days2023.Day_22(),
+                new Days2023.Day_23(),
+                new Days2023.Day_24(),
+                new Days2023.Day_25(),
             }
         }
     };

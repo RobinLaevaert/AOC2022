@@ -1,7 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Shared;
-
-namespace Days2023;
+﻿namespace Days2023;
 
 public partial class Day_03 : Day
 {

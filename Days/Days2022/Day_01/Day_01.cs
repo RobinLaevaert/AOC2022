@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Days2022;
+﻿namespace Days2022;
 
 public class Day_01 : Day
 {
