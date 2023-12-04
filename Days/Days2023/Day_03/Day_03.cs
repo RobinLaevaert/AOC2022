@@ -26,9 +26,6 @@ public partial class Day_03 : Day
             }));
             yIndex++;
         }
-        
-        
-        
     }
 
     public override string HandlePart1()

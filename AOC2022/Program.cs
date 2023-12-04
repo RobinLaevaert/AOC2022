@@ -85,6 +85,7 @@ public static class State
                 new Days2023.Day_01(),
                 new Days2023.Day_02(),
                 new Days2023.Day_03(),
+                new Days2023.Day_04(),
             }
         }
     };
