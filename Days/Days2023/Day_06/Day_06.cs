@@ -1,3 +1,5 @@
+using System.Security.AccessControl;
+
 namespace Days2023;
 
 public class Day_06 : Day
@@ -25,7 +27,7 @@ public class Day_06 : Day
 
     public override string HandlePart1()
     {
-        return Races.Aggregate(1, (a, x) => a * x.DistancesPossible.Count(t => t >= x.Distance)).ToString();
+        return Races.Aggregate(1, (a, x) => a * (int)x.PossibleTimes).ToString();
     }
 
     public override string HandlePart2()
@@ -37,7 +39,8 @@ public class Day_06 : Day
             Distance = long.Parse(actualRaceDistance),
             Time = int.Parse(actualRaceTime)
         };
-        return actualRace.DistancesPossible.Count(x => x >= actualRace.Distance).ToString();
+        
+        return actualRace.PossibleTimes.ToString();
     }
 }
 
@@ -45,6 +48,7 @@ public class Race
 {
     public int Time { get; set; }
     public long Distance { get; set; }
-
-    public List<long> DistancesPossible => Enumerable.Range(0, Time).Select(x => (Time - (long)x)*x).ToList();
+    private long CutOff1 => (long)Math.Ceiling((Time - Math.Sqrt(Math.Pow(Time, 2) - 4 * Distance)) / 2);
+    private long CutOff2 => (long)Math.Ceiling((Math.Sqrt(Math.Pow(Time, 2) - 4 * Distance) + Time ) / 2);
+    public long PossibleTimes => Math.Min(CutOff2, Time) - Math.Max(CutOff1, 0);
 }
