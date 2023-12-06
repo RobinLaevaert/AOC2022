@@ -25,7 +25,7 @@ public class Day_06 : Day
 
     public override string HandlePart1()
     {
-        return Races.Aggregate(1, (a, x) => a * x.DistancesPossible.Count(t => t > x.Distance)).ToString();
+        return Races.Aggregate(1, (a, x) => a * x.DistancesPossible.Count(t => t >= x.Distance)).ToString();
     }
 
     public override string HandlePart2()
@@ -37,7 +37,7 @@ public class Day_06 : Day
             Distance = long.Parse(actualRaceDistance),
             Time = int.Parse(actualRaceTime)
         };
-        return actualRace.DistancesPossible.Count(x => x > actualRace.Distance).ToString();
+        return actualRace.DistancesPossible.Count(x => x >= actualRace.Distance).ToString();
     }
 }
 
