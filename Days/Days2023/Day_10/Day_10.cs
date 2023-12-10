@@ -60,149 +60,78 @@ public class Day_10 : Day
 			currentCoord = newCoord;
 		}
 
-		for (int y = 0; y <= Tiles.Select(x => x.Key).Max(x => x.Y); y++)
+		foreach (var tile in Tiles.Where(x => !coordsInLoop.Contains(x.Key)))
 		{
-			for (int x = 0; x <= Tiles.Select(z => z.Key).Max(z => z.X); x++)
-			{
-				var tCoord = new Coord(x, y);
-				if (!coordsInLoop.Contains(tCoord))
-				{
-					var tile = Tiles.GetValueOrDefault(tCoord);
-					tile.Description = '.';
-				}
-
-				if (tCoord.Equals(StartCoord))
-				{
-					var tile = Tiles.GetValueOrDefault(tCoord);
-					var tCoordConnected = tile.ConnectedLocationCoords
-						.Where(x => Tiles.GetValueOrDefault(x)?.ConnectedLocationCoords.Contains(currentCoord) == true).ToList();
-
-					if (tCoordConnected.All(z => z.X == tCoord.X))
-						tile.Description = '|';
-					if (tCoordConnected.All(z => z.Y == tCoord.Y))
-						tile.Description = '-';
-					if (tCoordConnected.Any(z => z.X == tCoord.X && z.Y == tCoord.Y - 1) &&
-					    tCoordConnected.Any(z => z.X == tCoord.X - 1 && z.Y == tCoord.Y))
-						tile.Description = 'J';
-					if (tCoordConnected.Any(z => z.X == tCoord.X && z.Y == tCoord.Y - 1) &&
-					    tCoordConnected.Any(z => z.X == tCoord.X + 1 && z.Y == tCoord.Y))
-						tile.Description = 'L';
-					if (tCoordConnected.Any(z => z.X == tCoord.X && z.Y == tCoord.Y + 1) &&
-					    tCoordConnected.Any(z => z.X == tCoord.X + 1 && z.Y == tCoord.Y))
-						tile.Description = 'F';
-					if (tCoordConnected.Any(z => z.X == tCoord.X && z.Y == tCoord.Y + 1) &&
-					    tCoordConnected.Any(z => z.X == tCoord.X - 1 && z.Y == tCoord.Y))
-						tile.Description = '7';
-				}
-				
-			}
+			tile.Value.Description = '.';
 		}
+
+		var startTile = Tiles.GetValueOrDefault(StartCoord);
+		var tCoordConnected = startTile.ConnectedLocationCoords.Where(x => Tiles.GetValueOrDefault(x)?.ConnectedLocationCoords.Contains(currentCoord) == true).ToList();
+		if (tCoordConnected.All(z => z.X == StartCoord.X)) startTile.Description = '|';
+		if (tCoordConnected.All(z => z.Y == StartCoord.Y)) startTile.Description = '-';
+		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y - 1) && tCoordConnected.Any(z => z.X == StartCoord.X - 1 && z.Y == StartCoord.Y)) startTile.Description = 'J';
+		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y - 1) && tCoordConnected.Any(z => z.X == StartCoord.X + 1 && z.Y == StartCoord.Y)) startTile.Description = 'L';
+		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y + 1) && tCoordConnected.Any(z => z.X == StartCoord.X + 1 && z.Y == StartCoord.Y)) startTile.Description = 'F';
+		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y + 1) && tCoordConnected.Any(z => z.X == StartCoord.X - 1 && z.Y == StartCoord.Y)) startTile.Description = '7';
 
 
 		var insideCount = 0;
-		for (int y = 0; y <= Tiles.Select(x => x.Key).Max(x => x.Y); y++)
+		for (var y = 0; y <= Tiles.Select(x => x.Key).Max(x => x.Y); y++)
 		{
-			var inside = false;
-			var test = Tiles.Where(x => x.Key.Y == y).ToList();
+			var row = Tiles.Where(x => x.Key.Y == y).ToList();
 
-			for (int x = 0; x <= Tiles.Select(z => z.Key).Max(z => z.X); x++)
+			for (var x = 0; x <= Tiles.Select(z => z.Key).Max(z => z.X); x++)
 			{
 				var tCoord = new Coord(x, y);
 				var tile = Tiles.GetValueOrDefault(tCoord);
+				if (tile.Description != '.') continue;
 				
-				if (tile.Description == '.')
+				var left = row.Where(z => z.Key.X < tCoord.X).ToList();
+				var leftLines = left.Where(z => z.Value.Description == '|').ToList();
+				var leftCorners = left.Where(z => z.Value.Description is 'J' or '7' or 'L' or 'F').ToList();
+				var leftCount = 0;
+				var leftHold = '.';
+				foreach (var value in left.Select(t => t.Value))
 				{
-					var left = test.Where(z => z.Key.X < tCoord.X).ToList();
-					var leftLines = left.Where(z => z.Value.Description == '|').ToList();
-					var leftCorners = left.Where(z => z.Value.Description is 'J' or '7' or 'L' or 'F').ToList();
-					var right = test.Where(z => z.Key.X > tCoord.X).ToList();
-					var rightLines = right.Where(z => z.Value.Description == '|').ToList();
-					var rightCorners = right.Where(z => z.Value.Description is 'J' or '7' or 'L' or 'F').ToList();
-
-					var leftCount = 0;
-					var rightCount = 0;
-					var leftHold = '.';
-					var rightHold = '.';
-					for (int i = 0; i < left.Count(); i++)
+					switch (value.Description)
 					{
-						var value = left[i].Value;
-						switch (value.Description)
-						{
-							case '|':
+						case '|':
+							leftCount++;
+							break;
+						case 'L':
+							if (leftHold == '.') leftHold = value.Description;
+							break;
+						case 'J':
+							if (leftHold == '.') leftHold = value.Description;
+							if (leftHold == 'L') leftHold = '.';
+							else
+							{
+								leftHold = '.';
 								leftCount++;
-								break;
-							case 'L':
-								if (leftHold == '.') leftHold = value.Description;
-								break;
-							case 'J':
-								if (leftHold == '.') leftHold = value.Description;
-								if (leftHold == 'L') leftHold = '.';
-								else
-								{
-									leftHold = '.';
-									leftCount++;
-								}
-								break;
-							case 'F':
-								if (leftHold == '.') leftHold = value.Description;
-								break;
-							case '7':
-								if (leftHold == '.') leftHold = value.Description;
-								if (leftHold == 'F') leftHold = '.';
-								else
-								{
-									leftHold = '.';
-									leftCount++;
-								}
-								break;
+							}
+							break;
+						case 'F':
+							if (leftHold == '.') leftHold = value.Description;
+							break;
+						case '7':
+							if (leftHold == '.') leftHold = value.Description;
+							if (leftHold == 'F') leftHold = '.';
+							else
+							{
+								leftHold = '.';
+								leftCount++;
+							}
+							break;
 							
-						}
 					}
-					
-					for (int i = 0; i < right.Count(); i++)
-					{
-						var value = right[i].Value;
-						switch (value.Description)
-						{
-							case '|':
-								rightCount++;
-								break;
-							case 'L':
-								if (rightHold == '.') rightHold = value.Description;
-								break;
-							case 'J':
-								if (rightHold == '.') rightHold = value.Description;
-								if (rightHold == 'L') rightHold = '.';
-								else
-								{
-									rightHold = '.';
-									rightCount++;
-								}
-								break;
-							case 'F':
-								if (rightHold == '.') rightHold = value.Description;
-								break;
-							case '7':
-								if (rightHold == '.') rightHold = value.Description;
-								if (rightHold == 'F') rightHold = '.';
-								else
-								{
-									rightHold = '.';
-									rightCount++;
-								}
-								break;
-							
-						}
-					}
-					
-					// F7 + 0
-					// LJ + 0
-					if (
-						((leftLines.Any() || leftCorners.Any()) && leftCount % 2 != 0) &&
-						((rightLines.Any() || rightCorners.Any()) && rightCount % 2 != 0)
-					)
-						insideCount++;
 				}
+					
+				// F7 + 0
+				// LJ + 0
+				if (
+					(leftLines.Any() || leftCorners.Any()) && leftCount % 2 != 0
+				)
+					insideCount++;
 			}
 		}
 
