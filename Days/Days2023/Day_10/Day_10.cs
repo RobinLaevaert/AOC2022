@@ -1,9 +1,12 @@
+using System.Drawing;
+
 namespace Days2023;
 
 public class Day_10 : Day
 {
 	private Dictionary<Coord, Tile> Tiles;
 	private Coord StartCoord;
+
 	public Day_10()
 	{
 		Title = "Pipe Maze";
@@ -36,7 +39,7 @@ public class Day_10 : Day
 		while (!currentCoord.Equals(StartCoord))
 		{
 			var currentTile = Tiles.GetValueOrDefault(currentCoord);
-			var newCoord = currentTile.GetNextLocationCoord(coordsInLoop[coordsInLoop.IndexOf(currentCoord)-1]);
+			var newCoord = currentTile.GetNextLocationCoord(coordsInLoop[coordsInLoop.IndexOf(currentCoord) - 1]);
 			coordsInLoop.Add(newCoord);
 			currentCoord = newCoord;
 		}
@@ -55,7 +58,7 @@ public class Day_10 : Day
 		while (!currentCoord.Equals(StartCoord))
 		{
 			var currentTile = Tiles.GetValueOrDefault(currentCoord);
-			var newCoord = currentTile.GetNextLocationCoord(coordsInLoop[coordsInLoop.IndexOf(currentCoord)-1]);
+			var newCoord = currentTile.GetNextLocationCoord(coordsInLoop[coordsInLoop.IndexOf(currentCoord) - 1]);
 			coordsInLoop.Add(newCoord);
 			currentCoord = newCoord;
 		}
@@ -66,15 +69,21 @@ public class Day_10 : Day
 		}
 
 		var startTile = Tiles.GetValueOrDefault(StartCoord);
-		var tCoordConnected = startTile.ConnectedLocationCoords.Where(x => Tiles.GetValueOrDefault(x)?.ConnectedLocationCoords.Contains(currentCoord) == true).ToList();
+		var tCoordConnected = startTile.ConnectedLocationCoords.Where(x =>
+			Tiles.GetValueOrDefault(x)?.ConnectedLocationCoords.Contains(currentCoord) == true).ToList();
 		if (tCoordConnected.All(z => z.X == StartCoord.X)) startTile.Description = '|';
 		if (tCoordConnected.All(z => z.Y == StartCoord.Y)) startTile.Description = '-';
-		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y - 1) && tCoordConnected.Any(z => z.X == StartCoord.X - 1 && z.Y == StartCoord.Y)) startTile.Description = 'J';
-		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y - 1) && tCoordConnected.Any(z => z.X == StartCoord.X + 1 && z.Y == StartCoord.Y)) startTile.Description = 'L';
-		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y + 1) && tCoordConnected.Any(z => z.X == StartCoord.X + 1 && z.Y == StartCoord.Y)) startTile.Description = 'F';
-		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y + 1) && tCoordConnected.Any(z => z.X == StartCoord.X - 1 && z.Y == StartCoord.Y)) startTile.Description = '7';
+		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y - 1) &&
+		    tCoordConnected.Any(z => z.X == StartCoord.X - 1 && z.Y == StartCoord.Y)) startTile.Description = 'J';
+		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y - 1) &&
+		    tCoordConnected.Any(z => z.X == StartCoord.X + 1 && z.Y == StartCoord.Y)) startTile.Description = 'L';
+		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y + 1) &&
+		    tCoordConnected.Any(z => z.X == StartCoord.X + 1 && z.Y == StartCoord.Y)) startTile.Description = 'F';
+		if (tCoordConnected.Any(z => z.X == StartCoord.X && z.Y == StartCoord.Y + 1) &&
+		    tCoordConnected.Any(z => z.X == StartCoord.X - 1 && z.Y == StartCoord.Y)) startTile.Description = '7';
 
 
+		//var insideCoords = new List<Coord>();
 		var insideCount = 0;
 		for (var y = 0; y <= Tiles.Select(x => x.Key).Max(x => x.Y); y++)
 		{
@@ -85,57 +94,46 @@ public class Day_10 : Day
 				var tCoord = new Coord(x, y);
 				var tile = Tiles.GetValueOrDefault(tCoord);
 				if (tile.Description != '.') continue;
-				
+				if (coordsInLoop.Contains(tile.Location)) continue;
+
 				var left = row.Where(z => z.Key.X < tCoord.X).ToList();
 				var leftLines = left.Where(z => z.Value.Description == '|').ToList();
 				var leftCorners = left.Where(z => z.Value.Description is 'J' or '7' or 'L' or 'F').ToList();
-				var leftCount = 0;
-				var leftHold = '.';
-				foreach (var value in left.Select(t => t.Value))
+				
+				var Ls = leftCorners.Count(z => z.Value.Description == 'L');
+				var Js = leftCorners.Count(z => z.Value.Description == 'J');
+				var Fs = leftCorners.Count(z => z.Value.Description == 'F');
+				var sevens = leftCorners.Count(z => z.Value.Description == '7');
+
+				var temp = leftLines.Count + ((Fs + Ls + Js + sevens - (2 * Math.Min(Fs, sevens)) - (2 * Math.Min(Js, Ls)))/2);
+
+				if (temp % 2 != 0)
 				{
-					switch (value.Description)
-					{
-						case '|':
-							leftCount++;
-							break;
-						case 'L':
-							if (leftHold == '.') leftHold = value.Description;
-							break;
-						case 'J':
-							if (leftHold == '.') leftHold = value.Description;
-							if (leftHold == 'L') leftHold = '.';
-							else
-							{
-								leftHold = '.';
-								leftCount++;
-							}
-							break;
-						case 'F':
-							if (leftHold == '.') leftHold = value.Description;
-							break;
-						case '7':
-							if (leftHold == '.') leftHold = value.Description;
-							if (leftHold == 'F') leftHold = '.';
-							else
-							{
-								leftHold = '.';
-								leftCount++;
-							}
-							break;
-							
-					}
-				}
-					
-				// F7 + 0
-				// LJ + 0
-				if (
-					(leftLines.Any() || leftCorners.Any()) && leftCount % 2 != 0
-				)
+					//insideCoords.Add(tile.Location);
 					insideCount++;
+				}
 			}
 		}
+		
+		//Print(coordsInLoop, insideCoords);
 
 		return insideCount.ToString();
+	}
+
+	private void Print(List<Coord> coordsInLoop, List<Coord> insideCoords)
+	{
+		for (var y = 0; y <= Tiles.Select(x => x.Key).Max(x => x.Y); y++)
+		{
+			for (var x = 0; x <= Tiles.Select(z => z.Key).Max(z => z.X); x++)
+			{
+				Console.ResetColor();
+				if (coordsInLoop.Contains(new Coord(x, y))) Console.ForegroundColor = ConsoleColor.Green;
+				if (insideCoords.Contains(new Coord(x, y))) Console.ForegroundColor = ConsoleColor.Red;
+				Console.Write(Tiles.GetValueOrDefault(new(x, y)).Description.ToPrintChar());
+			}
+
+			Console.WriteLine();
+		}
 	}
 }
 
@@ -193,4 +191,17 @@ public class Coord : IEquatable<Coord>
 	{
 		return HashCode.Combine(X, Y);
 	}
+}
+
+public static class Extensions2
+{
+	public static char ToPrintChar(this char ch)
+		=> ch switch
+		{
+			'7' => '\u2510',
+			'J' => '\u2518',
+			'L' => '\u2514',
+			'F' => '\u250c',
+			_ => ch
+		};
 }
