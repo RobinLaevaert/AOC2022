@@ -193,7 +193,7 @@ public class Coord : IEquatable<Coord>
 	}
 }
 
-public static class Extensions2
+public static partial class Extensions
 {
 	public static char ToPrintChar(this char ch)
 		=> ch switch

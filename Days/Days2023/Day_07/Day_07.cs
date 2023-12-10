@@ -82,7 +82,7 @@ public class Hand
 	}
 }
 
-public static class Extensions
+public static partial class Extensions
 {
 	public static int GetStrengthOfLetter(this char letter) => letter switch
 	{
