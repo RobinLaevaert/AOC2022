@@ -162,7 +162,7 @@ public class Tile
 		=> ConnectedLocationCoords.Single(x => x.Y != from.Y || x.X != from.X);
 }
 
-public class Coord : IEquatable<Coord>
+public class Coord : IEquatable<Coord>, IComparable<Coord>
 {
 	public Coord(int x, int y)
 	{
@@ -190,6 +190,15 @@ public class Coord : IEquatable<Coord>
 	public override int GetHashCode()
 	{
 		return HashCode.Combine(X, Y);
+	}
+
+	public int CompareTo(Coord? other)
+	{
+		if (ReferenceEquals(this, other)) return 0;
+		if (ReferenceEquals(null, other)) return 1;
+		var xComparison = X.CompareTo(other.X);
+		if (xComparison != 0) return xComparison;
+		return Y.CompareTo(other.Y);
 	}
 }
 
