@@ -17,7 +17,7 @@ public class Day_15 : Day
 
 	public override string HandlePart1()
 	{
-		return Steps.Select(x => Helper.Hash(0,x)).Sum().ToString();
+		return Steps.Select(Helper.Hash).Sum().ToString();
 	}
 
 	public override string HandlePart2()
@@ -71,7 +71,7 @@ public class Lens
 		Label = new string(input.TakeWhile(x => x is not '=' and not '-').ToArray());
 		if (input.Contains('=')) FocalLength = int.Parse(input.Split('=').Last());
 		
-		BoxNumber = Helper.Hash(0, Label);
+		BoxNumber = Helper.Hash(Label);
 	}
 	public string Label { get; set; }
 	public int? FocalLength { get; set; }
@@ -80,9 +80,9 @@ public class Lens
 
 public static class Helper
 {
-	public static int Hash(int seed, string inp)
+	public static int Hash(string inp)
 	{
-		var curValue = seed;
+		var curValue = 0;
 		foreach (var ch in inp)
 		{
 			curValue += (int)ch;
