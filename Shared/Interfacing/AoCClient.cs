@@ -26,7 +26,6 @@ public class AoCClient : IAoCClient
         {
             BaseAddress = _baseUri 
         };
-        client.DefaultRequestHeaders.Add("Accept", "application/json");
         return await client.GetStringAsync($"{year}/day/{day}/input");
     }
 

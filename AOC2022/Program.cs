@@ -6,6 +6,7 @@ using Shared.Interfacing;
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile($"appsettings.json")
+    .AddEnvironmentVariables()
     .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
     .Build();
 
@@ -106,6 +107,15 @@ public static class State
                 new Days2023.Day_23(),
                 new Days2023.Day_24(),
                 new Days2023.Day_25(),
+            }
+        },
+        new Year()
+        {
+            YearNumber = 2024,
+            Days = new()
+            {
+                new Days2024.Day_01(),
+                new Days2024.Day_02()
             }
         }
     };
