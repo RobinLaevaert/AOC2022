@@ -115,7 +115,11 @@ public static class State
             Days = new()
             {
                 new Days2024.Day_01(),
-                new Days2024.Day_02()
+                new Days2024.Day_02(),
+                new Days2024.Day_03(),
+                new Days2024.Day_04(),
+                new Days2024.Day_05(),
+                new Days2024.Day_06(),
             }
         }
     };
