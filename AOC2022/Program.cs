@@ -121,6 +121,15 @@ public static class State
                 new Days2024.Day_05(),
                 new Days2024.Day_06(),
             }
+        },
+        new Year()
+        {
+            YearNumber = 2025,
+            Days = new()
+            {
+                new Days2025.Day_01(),
+                new Days2025.Day_02(),
+            }
         }
     };
 }
