@@ -130,6 +130,7 @@ public static class State
                 new Days2025.Day_01(),
                 new Days2025.Day_02(),
                 new Days2025.Day_03(),
+                new Days2025.Day_04(),
             }
         }
     };
